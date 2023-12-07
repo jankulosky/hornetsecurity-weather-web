@@ -62,6 +62,7 @@ namespace API.Services
 
             return new UserDto
             {
+                FirstName = user.FirstName,
                 Email = user.Email,
                 Token = _tokenService.CreateToken(user)
             };
