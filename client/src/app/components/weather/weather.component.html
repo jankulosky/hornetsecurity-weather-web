@@ -1,0 +1,29 @@
+<div class="container mt-5">
+    <h2 class="text-center">Weather Search</h2>
+    <form (submit)="searchWeather()" style="max-width: 400px;">
+        <label for="city" class="sr-only">City:</label>
+        <input type="text" class="form-control mt-2" id="city" name="city" [(ngModel)]="city" placeholder="Enter City"
+            required />
+        <button type="submit" class="btn btn-primary mt-3">Search</button>
+    </form>
+
+    <div *ngIf="weather" class="mt-5">
+        <h3>Weather for {{ weather.city }}, {{ weather.country }}</h3>
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Today</h5>
+                <p class="card-text">Temperature: {{ weather.forecast[0].avgTemp }}°C</p>
+                <p class="card-text">Weather: {{ weather.forecast[0].weather }}</p>
+            </div>
+        </div>
+
+        <div class="card mt-3" *ngFor="let day of weather.forecast.slice(1)">
+            <div class="card-body">
+                <h5 class="card-title">{{ day.date | date: 'full' }}</h5>
+                <p class="card-text">Temperature: {{ day.avgTemp | number: '1.2-2' }}°C</p>
+                <p class="card-text">Weather: {{ day.weather }}</p>
+            </div>
+        </div>
+    </div>
+</div>

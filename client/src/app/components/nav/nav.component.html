@@ -1,0 +1,20 @@
+<nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
+    <div class="container">
+        <a class="navbar-brand" routerLink="/" routerLinkActive="active">Weather App</a>
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+            <ng-container *ngIf="authenticationService.currentUser$ | async">
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/weather" routerLinkActive="active">Weather</a>
+                </li>
+            </ng-container>
+        </ul>
+
+        <div class="dropdown" *ngIf="(authenticationService.currentUser$ | async) as user" dropdown>
+            <a class="dropdown-toggle text-dark text-decoration-none ms-2" dropdownToggle>Welcome {{user.firstName |
+                titlecase}}</a>
+            <div class="dropdown-menu" *dropdownMenu>
+                <a class="dropdown-item" (click)="logout()">Logout</a>
+            </div>
+        </div>
+    </div>
+</nav>
