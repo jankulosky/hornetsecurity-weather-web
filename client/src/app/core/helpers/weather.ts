@@ -6,6 +6,6 @@ export interface IWeather {
 
 export interface IForecast {
   date: string;
-  avgTemp: number;
+  temp: number;
   weather: string;
 }

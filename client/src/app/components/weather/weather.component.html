@@ -10,19 +10,15 @@
     <div *ngIf="weather" class="mt-5">
         <h3>Weather for {{ weather.city }}, {{ weather.country }}</h3>
 
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Today</h5>
-                <p class="card-text">Temperature: {{ weather.forecast[0].avgTemp }}°C</p>
-                <p class="card-text">Weather: {{ weather.forecast[0].weather }}</p>
-            </div>
-        </div>
-
-        <div class="card mt-3" *ngFor="let day of weather.forecast.slice(1)">
-            <div class="card-body">
-                <h5 class="card-title">{{ day.date | date: 'full' }}</h5>
-                <p class="card-text">Temperature: {{ day.avgTemp | number: '1.2-2' }}°C</p>
-                <p class="card-text">Weather: {{ day.weather }}</p>
+        <div class="row">
+            <div *ngFor="let day of weather.forecast" class="col-md-2">
+                <div class="card text-center mt-3" style="height: 90%;">
+                    <div class="card-body">
+                        <p class="card-title">{{ day.date | date: 'EEEE' }}, {{ day.date | date: 'shortTime' }}</p>
+                        <h2 class="card-text">{{ day.temp }}°C</h2>
+                        <p class="card-text">{{ day.weather }}</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

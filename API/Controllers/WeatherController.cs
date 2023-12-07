@@ -8,26 +8,33 @@ namespace API.Controllers
     [Route("api/weather")]
     public class WeatherController : ControllerBase
     {
+        private readonly IConfiguration _config;
+        public WeatherController(IConfiguration config)
+        {
+            _config = config;
+        }
+
         [HttpGet("{city}")]
         public async Task<IActionResult> City(string city)
         {
+            string apiKey = _config["ApiKey"];
+
             using var client = new HttpClient();
             try
             {
                 client.BaseAddress = new Uri("http://api.openweathermap.org");
-                var response = await client.GetAsync($"/data/2.5/forecast?q={city}&units=metric&appid=802d182e27c13c97599030f179ea345b");
+                var response = await client.GetAsync($"/data/2.5/forecast?q={city}&units=metric&cnt=24&appid={apiKey}");
                 response.EnsureSuccessStatusCode();
 
                 var stringResult = await response.Content.ReadAsStringAsync();
                 var rawWeather = JsonConvert.DeserializeObject<OpenWeatherResponse>(stringResult);
 
                 var forecast = rawWeather.List
-                .GroupBy(f => DateTime.Parse(f.Dt_txt).Date)
-                .Take(4)
+                .GroupBy(f => DateTime.Parse(f.Dt_txt))
                 .Select(g => new
                 {
                     Date = g.Key,
-                    AvgTemp = g.Average(f => f.Main.Temp),
+                    Temp = g.Select(f => f.Main.Temp),
                     Weather = string.Join(", ", g.SelectMany(f => f.Weather.Select(w => w.Main)).Distinct())
                 });
 
